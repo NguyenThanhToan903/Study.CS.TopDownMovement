@@ -425,7 +425,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemies: {fileID: 11400000, guid: 6a0731d07e753a44db644759fa9aa93f, type: 2}
   enemyPrefab: {fileID: 9114558037642401213, guid: 001a0b8e287e9db49b33fc79cb771acb, type: 3}
-  enemyCount: 3
+  totalEnemyCount: 10
+  AreaPointA: {x: 0, y: 0, z: 0}
+  AreaPointB: {x: 10, y: 10, z: 0}
+  minimumZones: 2
+  maximumZones: 4
+  ZoneCount: 0
+  minimumRadius: 2
+  maximumRadius: 4
+  spawnZones: []
 --- !u!4 &1045548606
 Transform:
   m_ObjectHideFlags: 0
@@ -435,7 +443,7 @@ Transform:
   m_GameObject: {fileID: 1045548604}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.069616, y: 15.790895, z: -10.255545}
+  m_LocalPosition: {x: 8.27, y: 12.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

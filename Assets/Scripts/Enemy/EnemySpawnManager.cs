@@ -3,75 +3,195 @@ using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour
 {
-    [SerializeField] private List<EnemyMovement> enemies = new List<EnemyMovement>();
+    [SerializeField] private ListEnemyVariable enemies; // Reference to the ScriptableObject
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] public BoxCollider2D spawnArea;
 
-    [SerializeField] private SpawnAreaData spawnAreaData; // Chứa danh sách các SpawnArea
     [SerializeField] private int totalEnemyCount = 20;
 
-    private bool hasSpawned = false;
+    [SerializeField] private Vector3 AreaPointA;
+    [SerializeField] private Vector3 AreaPointB;
+
+    [SerializeField] private int minimumZones = 2;
+    [SerializeField] private int maximumZones = 4;
+    [SerializeField] private int ZoneCount;
+
+    [SerializeField] private float minimumRadius = 2.0f;
+    [SerializeField] private float maximumRadius = 4.0f;
+
+    private bool hasMiniSpawnedArea = false;
+
+    [System.Serializable]
+    public struct SpawnZone
+    {
+        public Vector3 Center;
+        public float Radius;
+        public float SpawnRatio; // Tỉ lệ spawn cho khu vực này
+    }
+
+    [SerializeField] private List<SpawnZone> spawnZones = new List<SpawnZone>();
 
     private void Start()
     {
-        if (!hasSpawned)
+        InitSpawn();
+    }
+
+    private void InitSpawn()
+    {
+        if (!hasMiniSpawnedArea)
         {
-            SpawnEnemies();
-            hasSpawned = true;
+            ZoneCount = Random.Range(minimumZones, maximumZones + 1);
+            CreateSpawnZones();
+            hasMiniSpawnedArea = true;
         }
     }
 
-    private void SpawnEnemies()
+    //private void CreateSpawnZones()
+    //{
+    //    spawnZones.Clear();
+    //    float totalSpawnRatio = 0f;
+
+    //    for (int i = 0; i < ZoneCount; i++)
+    //    {
+    //        bool validPosition = false;
+    //        Vector3 spawnPosition = Vector3.zero;
+    //        float zoneRadius;
+
+    //        // Try to find a valid position for the spawn zone
+    //        while (!validPosition)
+    //        {
+    //            spawnPosition = new Vector3(
+    //                Random.Range(AreaPointA.x, AreaPointB.x),
+    //                Random.Range(AreaPointA.y, AreaPointB.y),
+    //                0
+    //            );
+
+    //            zoneRadius = Random.Range(minimumRadius, maximumRadius);
+
+    //            validPosition = true;
+
+    //            // Check for overlap with existing zones
+    //            foreach (var existingZone in spawnZones)
+    //            {
+    //                float distance = Vector3.Distance(spawnPosition, existingZone.Center);
+    //                if (distance < (zoneRadius + existingZone.Radius + 1)) // 1 unit minimum distance
+    //                {
+    //                    validPosition = false;
+    //                    break;
+    //                }
+    //            }
+    //        }
+
+    //        float spawnRatio = Random.Range(0.1f, 1.0f);
+
+    //        spawnZones.Add(new SpawnZone { Center = spawnPosition, Radius = zoneRadius, SpawnRatio = spawnRatio });
+    //        totalSpawnRatio += spawnRatio;
+    //    }
+
+    //    // Normalize spawn ratios so they sum to 1
+    //    for (int i = 0; i < spawnZones.Count; i++)
+    //    {
+    //        var zone = spawnZones[i];
+    //        zone.SpawnRatio /= totalSpawnRatio;
+    //        spawnZones[i] = zone;
+    //    }
+
+    //    SpawnEnemiesInZones();
+    //}
+
+    private void CreateSpawnZones()
     {
-        if (enemies.Count > 0) enemies.Clear();
+        spawnZones.Clear();
+        float totalSpawnRatio = 0f;
 
-        Bounds bounds = spawnArea.bounds;
-        List<SpawnArea> areas = spawnAreaData.spawnAreas;
-
-        foreach (var areaData in areas)
+        for (int i = 0; i < ZoneCount; i++)
         {
-            Bounds spawnBounds = new Bounds(new Vector3(areaData.center.x, areaData.center.y, 0), new Vector3(areaData.radius * 2, areaData.radius * 2, bounds.size.z));
-            int enemiesInArea = Mathf.RoundToInt(totalEnemyCount * GetAreaDensity(spawnBounds, bounds));
+            bool validPosition = false;
+            Vector3 spawnPosition = Vector3.zero;
+            float zoneRadius = 0f;
 
-            for (int i = 0; i < enemiesInArea; i++)
+            // Try to find a valid position for the spawn zone
+            while (!validPosition)
             {
-                Vector3 position = GetRandomPositionInCircle(spawnBounds);
-                float direction = Random.Range(0f, 360f);
-                GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.Euler(Vector3.forward * direction) * enemyPrefab.transform.localRotation);
-                enemy.transform.SetParent(transform);
-                enemies.Add(enemy.GetComponent<EnemyMovement>());
+                spawnPosition = new Vector3(
+                    Random.Range(AreaPointA.x, AreaPointB.x),
+                    Random.Range(AreaPointA.y, AreaPointB.y),
+                    0
+                );
+
+                zoneRadius = Random.Range(minimumRadius, maximumRadius);
+
+                validPosition = true;
+
+                // Check for overlap with existing zones
+                foreach (var existingZone in spawnZones)
+                {
+                    float distance = Vector3.Distance(spawnPosition, existingZone.Center);
+                    if (distance < (zoneRadius + existingZone.Radius + 1)) // 1 unit minimum distance
+                    {
+                        validPosition = false;
+                        break;
+                    }
+                }
+            }
+
+            float spawnRatio = Random.Range(0.1f, 1.0f);
+
+            spawnZones.Add(new SpawnZone { Center = spawnPosition, Radius = zoneRadius, SpawnRatio = spawnRatio });
+            totalSpawnRatio += spawnRatio;
+        }
+
+        // Normalize spawn ratios so they sum to 1
+        for (int i = 0; i < spawnZones.Count; i++)
+        {
+            var zone = spawnZones[i];
+            zone.SpawnRatio /= totalSpawnRatio;
+            spawnZones[i] = zone;
+        }
+
+        SpawnEnemiesInZones();
+    }
+
+
+    private void SpawnEnemiesInZones()
+    {
+        foreach (var zone in spawnZones)
+        {
+            int enemiesInZone = Mathf.RoundToInt(totalEnemyCount * zone.SpawnRatio);
+            SpawnEnemies(zone.Center, zone.Radius, enemiesInZone);
+        }
+    }
+
+    private void SpawnEnemies(Vector3 center, float radius, int numberOfEnemies)
+    {
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            Vector3 spawnPosition;
+            do
+            {
+                Vector2 randomCircle = Random.insideUnitCircle * radius;
+                spawnPosition = center + new Vector3(randomCircle.x, randomCircle.y, 0);
+                spawnPosition.z = 0;
+            } while (!IsPositionWithinBounds(spawnPosition, center, radius));
+
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            if (enemy.TryGetComponent<EnemyMovement>(out var enemyMovement))
+            {
+                enemies.Add(enemyMovement);
             }
         }
     }
 
-    private float GetAreaDensity(Bounds area, Bounds fullBounds)
+    private bool IsPositionWithinBounds(Vector3 position, Vector3 center, float radius)
     {
-        float areaSize = area.size.x * area.size.y;
-        float fullSize = fullBounds.size.x * fullBounds.size.y;
-        return areaSize / fullSize;
-    }
-
-    private Vector3 GetRandomPositionInCircle(Bounds circleBounds)
-    {
-        Vector3 center = circleBounds.center;
-        float radius = circleBounds.extents.x;
-
-        Vector2 randomDirection = Random.insideUnitCircle * radius;
-        return new Vector3(center.x + randomDirection.x, center.y + randomDirection.y, 0);
+        return Vector3.Distance(position, center) <= radius;
     }
 
     private void OnDrawGizmos()
     {
-        if (spawnArea != null && spawnAreaData != null)
+        Gizmos.color = Color.red;
+        foreach (var zone in spawnZones)
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(spawnArea.transform.position, spawnArea.size);
-
-            Gizmos.color = Color.red;
-            foreach (var area in spawnAreaData.spawnAreas)
-            {
-                Gizmos.DrawWireSphere(new Vector3(area.center.x, area.center.y, 0), area.radius);
-            }
+            Gizmos.DrawWireSphere(zone.Center, zone.Radius);
         }
     }
 }
