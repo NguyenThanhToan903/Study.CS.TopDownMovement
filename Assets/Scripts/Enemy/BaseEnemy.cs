@@ -2,10 +2,10 @@ using UnityEngine;
 
 public abstract class BaseEnemy : MonoBehaviour
 {
-    public float speed;
+    [SerializeField] private float speed;
 
-    protected Vector2 movementDirection;
-    protected Vector2 Velocity;
+    [SerializeField] private Vector2 movementDirection;
+    [SerializeField] private Vector2 Velocity;
 
     // Abstract method for specific movement behavior
     public abstract void Move();

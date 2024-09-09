@@ -18,7 +18,7 @@ public class InputManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        this.GetInput();
+        GetInput();
     }
 
     protected virtual void GetInput()

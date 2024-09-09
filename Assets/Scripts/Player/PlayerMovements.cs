@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerMovements : MonoBehaviour
 {
@@ -14,11 +15,10 @@ public class PlayerMovements : MonoBehaviour
         GetMoveDir();
     }
 
-
     private void Move()
     {
-        moveInput = InputManager.Instance.input.normalized;
-        transform.parent.position += moveSpeed * Time.deltaTime * moveInput; 
+    moveInput = InputManager.Instance.input.normalized;
+    transform.parent.position += moveSpeed * Time.deltaTime * moveInput;
     }
 
     private void GetMoveDir()
