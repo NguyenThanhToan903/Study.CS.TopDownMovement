@@ -425,7 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemies: {fileID: 11400000, guid: 6a0731d07e753a44db644759fa9aa93f, type: 2}
   enemyPrefab: {fileID: 9114558037642401213, guid: 001a0b8e287e9db49b33fc79cb771acb, type: 3}
-  totalEnemyCount: 0
+  totalEnemyCount: 20
   AreaPointA: {x: 0, y: 0, z: 0}
   AreaPointB: {x: 30, y: 20, z: 0}
   minimumZones: 5

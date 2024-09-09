@@ -1,18 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEnemy : MonoBehaviour
+public abstract class BaseEnemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float speed;
+
+    protected Vector2 movementDirection;
+    protected Vector2 Velocity;
+
+    // Abstract method for specific movement behavior
+    public abstract void Move();
+
+    protected virtual void FixedUpdate()
     {
-        
+        Move();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected void SetVelocity(Vector2 newVelocity)
     {
-        
+        Velocity = newVelocity;
+        transform.position += (Vector3)(Time.fixedDeltaTime * Velocity);
     }
 }
