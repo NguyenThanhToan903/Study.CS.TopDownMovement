@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour
         transform.position += (Vector3)(Time.fixedDeltaTime * Velocity);
 
         // Kiểm tra giá trị di chuyển trong Console
-        Debug.Log($"Di chuyển hướng: {movementDirection} | Vị trí: {transform.position}");
+        Debug.Log($"Di chuyển hướngg: {movementDirection} | Vị trí: {transform.position}");
     }
 
     private void OnDrawGizmos()
