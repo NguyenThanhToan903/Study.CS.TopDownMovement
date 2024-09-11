@@ -122,6 +122,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &150891483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 150891485}
+  - component: {fileID: 150891484}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &150891484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150891483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c0d56f9f3755a44abaa62769c6303da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {x: 0, y: 0, z: 0}
+--- !u!4 &150891485
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150891483}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 53.81831, y: 8.348881, z: -10.2414}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +254,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 52.89367, y: 8.043356, z: -20.2414}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -249,6 +294,11 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &780270799 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3002366483695649892, guid: da6c565000f78144989b61e285ff83b0, type: 3}
+  m_PrefabInstance: {fileID: 927431457}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &844706345
 GameObject:
   m_ObjectHideFlags: 3
@@ -418,14 +468,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045548604}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af6577954cc3ad3479a36090347fa90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemies: {fileID: 11400000, guid: 6a0731d07e753a44db644759fa9aa93f, type: 2}
   enemyPrefab: {fileID: 9114558037642401213, guid: 001a0b8e287e9db49b33fc79cb771acb, type: 3}
-  enemyCount: 3
+  totalEnemyCount: 20
+  AreaPointA: {x: 0, y: 0, z: 0}
+  AreaPointB: {x: 30, y: 20, z: 0}
+  minimumZones: 5
+  maximumZones: 5
+  ZoneCount: 0
+  minimumRadius: 2
+  maximumRadius: 4
+  spawnZones: []
 --- !u!4 &1045548606
 Transform:
   m_ObjectHideFlags: 0
@@ -435,7 +493,7 @@ Transform:
   m_GameObject: {fileID: 1045548604}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.069616, y: 15.790895, z: -10.255545}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,7 +535,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 2004955306}
+  m_Follow: {fileID: 780270799}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -506,18 +564,13 @@ Transform:
   m_GameObject: {fileID: 1227349126}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 52.89367, y: 8.043356, z: -20.2414}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 844706346}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2004955306 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4239210421151734030, guid: da6c565000f78144989b61e285ff83b0, type: 3}
-  m_PrefabInstance: {fileID: 927431457}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -526,3 +579,4 @@ SceneRoots:
   - {fileID: 927431457}
   - {fileID: 1227349128}
   - {fileID: 1045548606}
+  - {fileID: 150891485}
